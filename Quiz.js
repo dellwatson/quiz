@@ -1,59 +1,42 @@
-const solution = (N, users) => {
-    let answer = [];
-    let total = users.length
-    let obj_user = {}
-    let result = {}
-    let arr = []
+A Candidate Key is an attribute or a set of attributes that can uniquely identify a tuple of a relation in the relational database and satisfies the following two properties.
 
-    //finding the total users in each stage
-    users.map(item => {
-        if(obj_user[item]){
-            obj_user = {
-                ...obj_user,
-                [item]: obj_user[item] + 1
-            }
-        }else {
-            obj_user = {
-                ...obj_user,
-                [item] : 1
-            }
-        }
-    })
+- Uniqueness: The relation does not have two distinct tuples (i.e. rows or records in common database language) with the same values for these attributes.
+- Minimality: There should no subset of these attributes satisfy uniqueness, which means if we exclude one of these attributes, then uniqueness will be broken.
 
-    //finding the failure rates
-    for( let i = 1; i <= N; i++ ){
-        let percentage
+[Student number, Name, Major, Grade]
 
-        if(obj_user[i] === undefined){
-            percentage = 0
-            total += 0
-        }else {
-            percentage = obj_user[i] / total
-            total -= obj_user[i]
-        }
-        
-        result = { 
-            ...result,
-            [i]: percentage
-        }
+[100,”ryan”,”music”,2]
+[200,”apeach”,”math”,2]
+[300,”tube”,”computer”,3]
+[400,”con”,”computer”,4]
+[500,”muzi”,”music”,3]
+[600,”apeach”,”music”,2]
 
-    }
+In the above example, each student has a unique "student number".
+Thus, the ["student number"] can be the candidate key of the relation.
 
-    //pushing object to array for easier sorting
-    for( let item in result ){
-        arr.push({
-            stage: item,
-            rate: result[item]
-        })
-    }
-    const sorted = arr.sort((a,b) => b.rate - a.rate )
-    sorted.map(item => answer.push(item.stage))
+Then, because there are students who use the same name ("apeach") for "name", "name" can not be a candidate key.
 
-    return answer
+However, if you use ["name", "major"] together, all the tuples of the relation can be uniquely identified, so they can become candidate keys.
+
+Of course, it is possible to uniquely identify all tuples in a relation using ["name", "major", "grade"], but it can not be a candidate key because it does not satisfy the minimum.
+
+Therefore, the candidate key of the input above is ["student number"], ["name", "major"].
+
+Find how many candidate keys are there for given array relation.
+Answer Code format
+function solution(relation) {
+    var answer = 0;
+    return answer;
 }
+Limitations
+- relation is a two-dimensional string array.
+- The length of the relation column is 1 ~ 8, and each column indicates the attribute of the relation.
+- The length of the row of relation is 1 ~ 20, and each row represents a tuple of relations.
+- The length of all strings in relation is 1 ~ 8, and consists of only lowercase letters and numbers.
+- All tuples of relation are uniquely identifiable (ie, there are no duplicate tuples).
+Input and output examples
+relation: 
+[[“100”,”ryan”,”music”,”2”],[“200”,”apeach”,”math”,”2”],[“300”,”tube”,”computer”,”3”],[“400”,”con”,”computer”,”4”],[“500”,”muzi”,”music”,”3”],[“600”,”apeach”,”music”,”2”]]
 
-const run = solution(5, [2,1,2,6,2,4,3,3])
-const run2 = solution(4, [4,4,4,4,4])
-
-console.log(run)
-console.log(run2)
+answer: 2
