@@ -3,8 +3,9 @@ const solution = (N, users) => {
     let total = users.length
     let obj_user = {}
     let result = {}
+    let arr = []
 
-
+    //finding the total users in each stage
     users.map(item => {
         if(obj_user[item]){
             obj_user = {
@@ -19,8 +20,7 @@ const solution = (N, users) => {
         }
     })
 
-    
-
+    //finding the failure rates
     for( let i = 1; i <= N; i++ ){
         let percentage
 
@@ -37,38 +37,17 @@ const solution = (N, users) => {
             [i]: percentage
         }
 
-        if(answer.length === 0){
-            answer.push(i)
-
-        }else if(percentage === result[i-1]){ //if value is same, must compare to another value in the array
-
-            for(let j = 0; j < answer.length; j++){
-
-                if(j === answer.length -1 && percentage <= result[answer[j]]){  //checking if the end number value still lower than the lastest array
-                    answer.push(i)
-
-                }else if(percentage > result[answer[j]]){ //finding the value lower than the current value to insert in the array
-                    answer.splice(j,0,i)
-                    break;
-                }
-            }
-        }else if(percentage > result[i-1]){ // simply checking if the 1st array lower than the current value then just simply push in the 1st
-            answer.unshift(i)
-
-        }else if(percentage < result[i-1]){
-
-            for(let k = answer.length -1;  k >= 0; k-- ){ //reverse loop, checking from behind
-
-                if(percentage < result[answer[k]]){
-                    answer.splice(k + 1, 0, i)
-                    break;
-                }
-
-            }
-            answer.push(i)
-        }
-
     }
+
+    //pushing object to array for easier sorting
+    for( let item in result ){
+        arr.push({
+            stage: item,
+            rate: result[item]
+        })
+    }
+    const sorted = arr.sort((a,b) => b.rate - a.rate )
+    sorted.map(item => answer.push(item.stage))
 
     return answer
 }
