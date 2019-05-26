@@ -1,25 +1,33 @@
 const solution = record => {
     let answer = []
+    let history = []
     let id = {}
-    for( let i = record.length -1; i >= 0; i-- ){
-      const temp_id = record[i].split(" ")
-      const status = temp_id[0]
-      const uid = temp_id[1]
-      const name = temp_id[2]
-  
-      if(!id[uid]) {
-        id = {
-          ...id,
-           [uid] : { name, uid }
-         }
-      }
-  
-      if(status === 'Enter'){
-        answer.unshift(`${id[uid].name} came in`)
-      }else if(status === 'Leave'){
-        answer.unshift(`${id[uid].name} has left`)
-      }
-    }
+
+    record.map(item => {
+        const temp_id = item.split(" ")
+        const status = temp_id[0]
+        const uid = temp_id[1]
+        const name = temp_id[2]
+
+        if(status === 'Enter'){
+            history.push(`${uid} came in`)
+        }else if(status === 'Leave'){
+            history.push(`${uid} has left`)
+        }
+
+        if(name){
+            id = { ...id, [uid] : { name }}
+        }
+    })
+
+    history.map(item => {
+        const word = item.split(" ")
+        const uid = word[0]
+        const nickname = id[uid].name
+
+        answer.push(`${nickname} ${word[1]} ${word[2]}`)
+    })
+    
     return answer
   }
   
@@ -29,8 +37,21 @@ const solution = record => {
     "Leave uid1234",
     "Enter uid1234 Prodo",
     "Change uid4567 Ryan",
+    "Leave uid1234",
+    "Enter uid5555 NewGuy",
+    "Change uid4567 Kevin",
+    "Leave uid1234",
+    "Change uid4567 Ryan",
+    "Leave uid1234",
+    "Enter uid5555 NewGuy",
+    "Change uid4567 Kevin",
+    "Leave uid1234","Change uid4567 Ryan",
+    "Leave uid1234",
+    "Enter uid5555 NewGuy",
+    "Change uid4567 Kevin",
+    "Leave uid1234",
+
   ])
   console.log(run)
   
-
   
