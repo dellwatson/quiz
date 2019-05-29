@@ -1,73 +1,45 @@
-const solution = relation => {
-    let answer = 0;
-    /**
-     * arr is a reverse given array from (relation)
-     * saveNonKey is a column that surely not categorized as identical key, which means there's no uniqueness
-     */
-    let arr = []
-    let saveNonKey = []
+Question #2
+There is a mobile game with stage. We wanna get the failure rate of each stage.
 
-    if(relation.length > 20 || relation[0].length > 8){
-        return "Table format is wrong, limit are 20 rows and 8 columns"
-    }else {
-        /**
-         * finding if column is already unique and identical key
-         * or super key ( the key with absolute unique for each relation and usually is an id ) 
-         * 
-         */
-        for(let i = 0; i < relation[0].length; i++ ){ arr.push([]) }
-        for(let i = 0; i < relation.length; i++ ){
-            
-            for(let j = 0; j < relation[i].length; j++ ){
-                arr[j].push(relation[i][j])
-            }
-        }
-    
-        //checking if single column has a duplication
-        arr.map(item => {
-            let duplicate = false
+The failure rate is defined as follows;
+Number of players who have reached the stage but have not yet cleared / Number of players who have reached the stage.
 
-            item.filter((value, index) => {
-                if(item.indexOf(value) != index){
-                    duplicate = true
-                }
-            })
-    
-            duplicate ? saveNonKey.push(arr.indexOf(item)) : answer += 1
-        })
-    
-        //the duplication column would be re-check to satisy the minimal condition 
-        for(let i = 0; i < saveNonKey.length -1; i++) {
-            for(let j = i +1; j < saveNonKey.length; j++){
-                let combine = []
-                let duplicate = false
-                for(let k = 0; k < arr[saveNonKey[i]].length; k++) {
-                    combine.push(arr[saveNonKey[i]][k] + arr[saveNonKey[j]][k])
-                }
-    
-                //this can be created as a method, to avoid DRY
-                combine.filter((value, index) => {
-                    if(combine.indexOf(value) != index){
-                        duplicate = true
-                    }
-                })
-                duplicate ? null : answer +=1
-            }
-        }
-    
-        return answer;
-    }
-
+Complete the function to return an array containing the number of the stage in descending order of the highest failure rate, when total stages N, an array users containing the stage in which the game user is currently playing are given as a parameter.
+Answer Code format
+function solution(N, users) {
+    var answer = [];
+    return answer;
 }
+Limitations
+- N, total stages: 1 ~ 500
+- users:
+  The length of array users: 1 ~ 200,000
+  users contain numbers 1 ~ N + 1.
+- Each number in users represents the stage that the user is currently playing.
+- Where (N + 1) represents the user who cleared the last stage (Nth stage).
+- If there is a stage with the same failure rate, the smaller number of stages should be placed first.
+- If there is no user who reaches the stage, the failure rate of the stage is 0.
+Input and output examples
+N: 5
+users: [2,1,2,6,2,4,3,3]
+answer: [3,4,2,1,5]
 
+A total 8 users played stage one, and one of them was not clear the stage yet. Therefore, the failure rate of stage 1 is as follows.
+Stage 1 failure rate: 1/8
 
-const relation = [
-    [100,"ryan","music",2],
-    [200,"apeach","math",2],
-    [300,"tube","computer",3],
-    [400,"con","computer",4],
-    [500,"muzi","music",3],
-    [600,"apeach","music",2],
-]
+A total 7 users played stage 2, 3 of which were not clear the stage yet. Therefore, the failure rate of stage 2 is as follows.
+Stage 2 failure rate: 3/7
 
-console.log(solution(relation))
+Likewise, the failure rates of the remaining stages are as follows.
+Stage 3 failure rate: 2/4
+Stage 4 failure rate: 1/2
+Stage 5 failure rate: 0/1
+
+Sort the number of stages by failure rate in descending order: [3,4,2,1,5]
+
+N: 4
+users: [4,4,4,4,4]
+answer: [4,1,2,3]
+
+Since all users are in the last stage, the failure rate of stage 4 is 1 and the failure rate of the remaining stages is 0.
+If the failure rate is same, then the smaller number of stages should come first.
