@@ -1,62 +1,20 @@
-const solution = record => {
-    let answer = []
-    let history = []
-    let id = {}
-    const regex = /[^a-z0-9]/gi
+/**
+ * 
+ * The code made around 8-12 hours in total,
+ * git branch for the answer :
+ * 
+ * Quiz1/answer
+ * Quiz1/reverse
+ * 
+ * Quiz2/answer
+ * 
+ * Quiz3/answer
+ *
+ * 
+ * Quiz 1 made in 2 answers, with reverse iteration and normal iteration, 
+ * since the reverse is more simpler and it's already fulfill the requirement but it's not perfect
+ * mostly written in ES6, because i like it :)
+ * 
+ * 
+ */
 
-    if(record.length > 100000){
-        return "Record has reached its maximum length, maximum is 100,000"
-    }
-
-    record.map(item => {
-        const temp_id = item.split(" ")
-        const status = temp_id[0]
-        const uid = temp_id[1].replace(regex,"")
-        const name = temp_id[2] ? temp_id[2].replace(regex,"") : null
-
-        if(status === 'Enter'){
-            history.push(`${uid} came in`)
-        }else if(status === 'Leave'){
-            history.push(`${uid} has left`)
-        }
-
-        if(name){
-            id = { ...id, [uid] : { name }}
-        }
-    })
-
-    history.map(item => {
-        const word = item.split(" ")
-        const uid = word[0]
-        const nickname = id[uid].name
-
-        answer.push(`${nickname} ${word[1]} ${word[2]}`)
-    })
-    
-    return answer
-  }
-  
-  const run = solution([
-    "Enter uid1234 Muzi",
-    "Enter uid4567 Prodo",
-    "Leave uid1234",
-    "Enter uid1234 Prodo",
-    "Change uid4567 Ryan",
-    "Leave uid1234",
-    "Enter uid5555 NewGuy",
-    "Change uid4567 Kevin",
-    "Leave uid1234",
-    "Change uid4567 Ryan",
-    "Leave uid1234",
-    "Enter uid5555 NewGuy",
-    "Change uid4567 Kevin",
-    "Leave uid1234","Change uid4567 Ryan",
-    "Leave uid1234",
-    "Enter uid5555 NewGuy",
-    "Change uid4567 Kevin",
-    "Leave uid1234",
-
-  ])
-  console.log(run)
-  
-  
