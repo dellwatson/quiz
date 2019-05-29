@@ -5,6 +5,10 @@ const solution = (N, users) => {
     let result = {}
     let arr = []
 
+    if(N > 500 || N < 0 || users.length > 200000 ){
+        return "Total stages or users is invalid"
+    }
+
     //finding the total users in each stage
     users.map(item => {
         if(obj_user[item]){
@@ -46,13 +50,14 @@ const solution = (N, users) => {
             rate: result[item]
         })
     }
+
     const sorted = arr.sort((a,b) => b.rate - a.rate )
     sorted.map(item => answer.push(item.stage))
 
     return answer
 }
 
-const run = solution(5, [2,1,2,6,2,4,3,3])
+const run = solution(50000, [2,1,2,6,2,4,3,3])
 const run2 = solution(4, [4,4,4,4,4])
 
 console.log(run)
