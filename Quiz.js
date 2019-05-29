@@ -2,12 +2,17 @@ const solution = record => {
     let answer = []
     let history = []
     let id = {}
+    const regex = /[^a-z0-9]/gi
+
+    if(record.length > 100000){
+        return "Record has reached its maximum length, maximum is 100,000"
+    }
 
     record.map(item => {
         const temp_id = item.split(" ")
         const status = temp_id[0]
-        const uid = temp_id[1]
-        const name = temp_id[2]
+        const uid = temp_id[1].replace(regex,"")
+        const name = temp_id[2] ? temp_id[2].replace(regex,"") : null
 
         if(status === 'Enter'){
             history.push(`${uid} came in`)
