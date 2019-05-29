@@ -1,59 +1,58 @@
-const solution = (N, users) => {
-    let answer = [];
-    let total = users.length
-    let obj_user = {}
-    let result = {}
+const solution = relation => {
+    let answer = 0;
     let arr = []
+    let saveNonKey = []
+    let compare = []
+    //preventing the super key to be involved, find which column has the real super key
+    for(let i = 0; i < relation[0].length; i++ ){ arr.push([]) }
+    for(let i = 0; i < relation.length; i++ ){
+        
+        for(let j = 0; j < relation[i].length; j++ ){
+            arr[j].push(relation[i][j])
+        }
+    }
 
-    //finding the total users in each stage
-    users.map(item => {
-        if(obj_user[item]){
-            obj_user = {
-                ...obj_user,
-                [item]: obj_user[item] + 1
+    //checking if single row has non duplicate = + key -- 
+    arr.map(item => {
+        let duplicate = false
+
+        item.filter((value, index) => {
+            if(item.indexOf(value) != index){
+                duplicate = true
             }
-        }else {
-            obj_user = {
-                ...obj_user,
-                [item] : 1
-            }
+        })
+
+        if(duplicate){
+            saveNonKey.push(arr.indexOf(item))
+        }else{
+            answer += 1
         }
     })
 
-    //finding the failure rates
-    for( let i = 1; i <= N; i++ ){
-        let percentage
-
-        if(obj_user[i] === undefined){
-            percentage = 0
-            total += 0
-        }else {
-            percentage = obj_user[i] / total
-            total -= obj_user[i]
-        }
+    console.log(arr)
+    console.log(saveNonKey)
+    for(let i = 0; i < saveNonKey.length -1; i++) {
         
-        result = { 
-            ...result,
-            [i]: percentage
+        for(let j = i +1; j < saveNonKey.length; j++){
+            for(let k = 0; k < arr[saveNonKey[i]].length; k++) {
+                compare.push(arr[saveNonKey[i]][k] + arr[saveNonKey[j]][k])
+            }
         }
-
     }
 
-    //pushing object to array for easier sorting
-    for( let item in result ){
-        arr.push({
-            stage: item,
-            rate: result[item]
-        })
-    }
-    const sorted = arr.sort((a,b) => b.rate - a.rate )
-    sorted.map(item => answer.push(item.stage))
 
-    return answer
+
+    return compare;
 }
 
-const run = solution(5, [2,1,2,6,2,4,3,3])
-const run2 = solution(4, [4,4,4,4,4])
 
-console.log(run)
-console.log(run2)
+const relation = [
+    [100,"ryan","music",2],
+    [200,"apeach","math",2],
+    [300,"tube","computer",3],
+    [400,"con","computer",4],
+    [500,"muzi","music",3],
+    [600,"apeach","music",2],
+]
+
+console.log(solution(relation))
